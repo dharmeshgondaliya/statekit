@@ -2,32 +2,32 @@ import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:statekit/statekit.dart';
 
-class SecondScreen extends StatefulWidget {
-  const SecondScreen({super.key});
+class SecondScreen extends StatekitView<SecondScreenController> implements SecondScreenBinding {
+  SecondScreen({super.key, super.tag});
 
-  @override
-  State<SecondScreen> createState() => _SecondScreenState();
-}
-
-class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: StateBuilder<SecondScreenController>(
-          builder: (context, controller, child) {
-            return MaterialButton(
-              onPressed: () {
-                Statekit.find<HomeController>().incrementCount();
-              },
-              child: const Text("Click"),
-            );
+        child: MaterialButton(
+          onPressed: () {
+            Statekit.find<HomeController>().incrementCount();
           },
+          child: const Text("Click"),
         ),
       ),
     );
   }
+
+  @override
+  void showMessage(String text) {
+    print("Message: $text");
+  }
 }
 
-class SecondScreenController extends StateController {}
+class SecondScreenController extends StateController<SecondScreenBinding> {}
+
+abstract class SecondScreenBinding implements StateBinding {
+  void showMessage(String text);
+}

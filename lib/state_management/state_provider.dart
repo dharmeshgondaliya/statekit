@@ -30,7 +30,10 @@ class _StateProviderState<T extends StateController> extends State<StatekitProvi
       controllers.addAll(widget.stateProviders! as List<StateProvider<T>>);
     }
     for (int i = 0; i < controllers.length; i++) {
-      Statekit.putIfAbsent(controllers[i].create(), tag: controllers[i].tag);
+      T? controller = Statekit.putIfAbsent(controllers[i].create(), tag: controllers[i].tag);
+      if (widget.child is StatekitView && widget.child is StateBinding) {
+        controller?.binding = widget.child as StateBinding;
+      }
     }
   }
 
@@ -41,7 +44,9 @@ class _StateProviderState<T extends StateController> extends State<StatekitProvi
   }
 
   void _initStateProviderController(StateProviderCreate<T> creator, String? tag) {
-    (Statekit.findOrNull<T>(tag: tag) as StateController).onInit();
+    (Statekit.findOrNull<T>(tag: tag) as StateController)
+      ..arguments = ModalRoute.settingsOf(context)?.arguments
+      ..onInit();
   }
 
   void _disposeControllers() {

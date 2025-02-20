@@ -11,7 +11,7 @@ class Routes {
     firstScreen: (_) => const MyHomePage(),
     secondScreen: (_) => StatekitProvider(
           stateProvider: StateProvider(create: () => SecondScreenController()),
-          child: const SecondScreen(),
+          child: SecondScreen(),
         ),
   };
 }

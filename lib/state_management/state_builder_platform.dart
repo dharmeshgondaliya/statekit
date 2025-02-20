@@ -47,6 +47,12 @@ final class StateBuilderPlatform<T extends StateController> extends StateBuilder
 
     builderFn ??= builder;
 
-    return builderFn!(context, controller as T, child);
+    return builderFn!(context, _controller as T, child);
   }
+
+  @override
+  void dispose() {}
+
+  @override
+  void initState() {}
 }

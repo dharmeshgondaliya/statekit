@@ -5,16 +5,20 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-part 'statekit/state_data_holder.dart';
 part 'statekit/st.dart';
 part 'statekit/st_types.dart';
+part 'statekit/state_data_holder.dart';
 part 'controller/state_controller.dart';
+part 'bindings/state_binding.dart';
+part 'state_management/statekit_view.dart';
 part 'state_management/state_view_base.dart';
 part 'state_management/state_view.dart';
 part 'state_management/state_view_platform.dart';
+part 'state_management/state_view_responsive.dart';
 part 'state_management/state_builder_base.dart';
 part 'state_management/state_builder.dart';
 part 'state_management/state_builder_platform.dart';
+part 'state_management/state_builder_responsive.dart';
 part 'state_management/state_provider.dart';
 part 'data_storage/data_storage.dart';
 
@@ -43,8 +47,8 @@ abstract final class Statekit {
     return DataStorage._instance.delete<T>(tag);
   }
 
-  static void deleteObject<T>({required T object, String? tag}) {
-    return DataStorage._instance.deleteObject<T>(object, tag);
+  static void deleteObject<T>(T obj, {String? tag}) {
+    return DataStorage._instance.deleteObject<T>(obj, tag);
   }
 
   static void deleteAll<T>() {

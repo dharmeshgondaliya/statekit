@@ -14,19 +14,19 @@ final class StateViewPlatform<T extends _St> extends _StateViewWidget {
     this.fuchsia,
     this.child,
   }) : super(value: value);
-  final StateViewPLatformBuilder<T>? builder;
-  final StateViewPLatformBuilder<T>? web;
-  final StateViewPLatformBuilder<T>? android;
-  final StateViewPLatformBuilder<T>? ios;
-  final StateViewPLatformBuilder<T>? linux;
-  final StateViewPLatformBuilder<T>? mac;
-  final StateViewPLatformBuilder<T>? windows;
-  final StateViewPLatformBuilder<T>? fuchsia;
+  final StateViewPlatformBuilder<T>? builder;
+  final StateViewPlatformBuilder<T>? web;
+  final StateViewPlatformBuilder<T>? android;
+  final StateViewPlatformBuilder<T>? ios;
+  final StateViewPlatformBuilder<T>? linux;
+  final StateViewPlatformBuilder<T>? mac;
+  final StateViewPlatformBuilder<T>? windows;
+  final StateViewPlatformBuilder<T>? fuchsia;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    StateViewPLatformBuilder<T>? widgetFn;
+    StateViewPlatformBuilder<T>? widgetFn;
     if (kIsWeb) {
       widgetFn = web;
     } else if (Platform.isAndroid) {

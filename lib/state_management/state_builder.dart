@@ -6,5 +6,11 @@ final class StateBuilder<T extends StateController> extends StateBuilderBase<T> 
   final Widget? child;
 
   @override
-  Widget build(context) => builder(context, controller as T, child);
+  Widget build(context) => builder(context, _controller as T, child);
+
+  @override
+  void dispose() {}
+
+  @override
+  void initState() {}
 }

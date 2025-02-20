@@ -1,7 +1,7 @@
 part of '../statekit.dart';
 
 typedef StateViewBuilder<T> = Widget Function(T value);
-typedef StateViewPLatformBuilder<T> = Widget Function(T value, Widget? child);
+typedef StateViewPlatformBuilder<T> = Widget Function(T value, Widget? child);
 
 abstract class _StateViewWidget<T extends _St> extends StatefulWidget {
   const _StateViewWidget({super.key, required this.value});
