@@ -12,7 +12,7 @@ final class DataStorage {
   T _put<T>(T obj, String? tag) {
     String key = "${T.toString()}@${tag ?? ''}";
     if (_data.containsKey(key)) {
-      throw Exception();
+      throw Exception("$T is already registered.");
     }
     _data[key] = obj;
     return obj;
@@ -31,7 +31,7 @@ final class DataStorage {
   T _find<T>(String? tag) {
     String key = "${T.toString()}@${tag ?? ''}";
     if (!_data.containsKey(key)) {
-      throw Exception();
+      throw Exception("$T is not registered.");
     }
     return _data[key];
   }
@@ -47,7 +47,7 @@ final class DataStorage {
   T _replace<T>(T obj, String? tag) {
     String key = "${T.toString()}@${tag ?? ''}";
     if (!_data.containsKey(key)) {
-      throw Exception();
+      throw Exception("$T is not registered.");
     }
     _data.remove(key);
     _data[key] = obj;

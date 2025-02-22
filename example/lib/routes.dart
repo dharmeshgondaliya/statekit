@@ -9,8 +9,8 @@ class Routes {
 
   static final Map<String, Widget Function(BuildContext contect)> routes = {
     firstScreen: (_) => const MyHomePage(),
-    secondScreen: (_) => StatekitProvider(
-          stateProvider: StateProvider(create: () => SecondScreenController()),
+    secondScreen: (_) => StateProvider(
+          stateProvider: StatekitProvider(create: () => SecondScreenController()),
           child: SecondScreen(),
         ),
   };

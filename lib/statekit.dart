@@ -40,7 +40,7 @@ abstract final class Statekit {
   }
 
   static T replace<T>(T obj, {String? tag}) {
-    return DataStorage._instance._replace(obj, tag);
+    return DataStorage._instance._replace<T>(obj, tag);
   }
 
   static void delete<T>({String? tag}) {
@@ -51,7 +51,7 @@ abstract final class Statekit {
     return DataStorage._instance.deleteObject<T>(obj, tag);
   }
 
-  static void deleteAll<T>() {
+  static void deleteAll() {
     return DataStorage._instance.deleteAll();
   }
 }

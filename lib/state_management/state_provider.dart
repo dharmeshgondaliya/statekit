@@ -2,60 +2,63 @@ part of '../statekit.dart';
 
 typedef StateProviderCreate<T> = T Function();
 
-class StateProvider<T> {
-  StateProvider({required this.create, this.tag});
+class StatekitProvider<T> {
+  StatekitProvider({required this.create, this.tag});
   StateProviderCreate<T> create;
   String? tag;
 }
 
-class StatekitProvider<T extends StateController> extends StatefulWidget {
-  const StatekitProvider({super.key, required this.stateProvider, required this.child}) : stateProviders = null;
-  const StatekitProvider.multi({super.key, required this.stateProviders, required this.child}) : stateProvider = null;
-  final StateProvider<T>? stateProvider;
-  final List<StateProvider<T>>? stateProviders;
+class StateProvider<T extends StateController> extends StatefulWidget {
+  StateProvider({super.key, required this.stateProvider, required this.child}) : stateProviders = null {
+    _putControllers();
+  }
+  StateProvider.multi({super.key, required this.stateProviders, required this.child}) : stateProvider = null {
+    _putControllers();
+  }
+
+  final List<StatekitProvider<T>> _providers = [];
+  final StatekitProvider<T>? stateProvider;
+  final List<StatekitProvider<T>>? stateProviders;
   final Widget child;
 
-  @override
-  State<StatekitProvider> createState() => _StateProviderState<T>();
-}
-
-class _StateProviderState<T extends StateController> extends State<StatekitProvider> {
-  _StateProviderState();
-  final List<StateProvider<T>> controllers = [];
-
-  _putControllers() {
-    if (widget.stateProvider != null) {
-      controllers.add(widget.stateProvider as StateProvider<T>);
+  void _putControllers() {
+    if (stateProvider != null) {
+      _providers.add(stateProvider!);
     } else {
-      controllers.addAll(widget.stateProviders! as List<StateProvider<T>>);
+      _providers.addAll(stateProviders!);
     }
-    for (int i = 0; i < controllers.length; i++) {
-      T? controller = Statekit.putIfAbsent(controllers[i].create(), tag: controllers[i].tag);
-      if (widget.child is StatekitView && widget.child is StateBinding) {
-        controller?.binding = widget.child as StateBinding;
+    for (int i = 0; i < _providers.length; i++) {
+      T controller = Statekit.putIfAbsent(_providers[i].create(), tag: _providers[i].tag);
+      if (child is StatekitView && child is StateBinding) {
+        controller.binding = child as StateBinding;
       }
     }
   }
 
+  @override
+  State<StateProvider> createState() => _StateProviderState<T>();
+}
+
+class _StateProviderState<T extends StateController> extends State<StateProvider> {
   void _initControllers() {
-    for (int i = 0; i < controllers.length; i++) {
-      _initStateProviderController(controllers[i].create, controllers[i].tag);
+    for (int i = 0; i < widget._providers.length; i++) {
+      _initStateProviderController(widget._providers[i].create, widget._providers[i].tag);
     }
   }
 
-  void _initStateProviderController(StateProviderCreate<T> creator, String? tag) {
+  void _initStateProviderController<S>(StateProviderCreate<S> creator, String? tag) {
     (Statekit.findOrNull<T>(tag: tag) as StateController)
       ..arguments = ModalRoute.settingsOf(context)?.arguments
       ..onInit();
   }
 
   void _disposeControllers() {
-    for (int i = 0; i < controllers.length; i++) {
-      _disposeStateProviderController(controllers[i].create, controllers[i].tag);
+    for (int i = 0; i < widget._providers.length; i++) {
+      _disposeStateProviderController(widget._providers[i].create, widget._providers[i].tag);
     }
   }
 
-  void _disposeStateProviderController(StateProviderCreate<T> creator, String? tag) {
+  void _disposeStateProviderController<S>(StateProviderCreate<S> creator, String? tag) {
     (Statekit.findOrNull<T>(tag: tag) as StateController).dispose();
     Statekit.delete<T>(tag: tag);
   }
@@ -63,7 +66,6 @@ class _StateProviderState<T extends StateController> extends State<StatekitProvi
   @override
   void initState() {
     super.initState();
-    _putControllers();
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((timeStamp) => _initControllers.call());
   }
 

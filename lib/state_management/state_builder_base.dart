@@ -6,9 +6,11 @@ typedef StateBuilderBuildWhen<T> = bool Function(T controller);
 
 abstract class StateBuilderBase<T extends StateController> extends StatefulWidget {
   StateBuilderBase({super.key, T? controller, this.buildWhen, String? tag}) {
-    this._controller = controller ?? Statekit.find<T>(tag: tag);
+    this._tag = tag;
+    _controller = controller ??= Statekit.findOrNull<T>(tag: tag);
   }
-  late final T? _controller;
+  T? _controller;
+  late final String? _tag;
   final StateBuilderBuildWhen<T>? buildWhen;
 
   bool get _canBuild => buildWhen?.call(_controller as T) ?? true;
@@ -16,7 +18,7 @@ abstract class StateBuilderBase<T extends StateController> extends StatefulWidge
   T get controller => _controller!;
 
   @override
-  State<StateBuilderBase> createState() => _StateBuilderBaseState();
+  State<StateBuilderBase> createState() => _StateBuilderBaseState<T>();
 
   @protected
   Widget build(BuildContext context);
@@ -26,9 +28,10 @@ abstract class StateBuilderBase<T extends StateController> extends StatefulWidge
   void dispose();
 }
 
-class _StateBuilderBaseState extends State<StateBuilderBase> {
+class _StateBuilderBaseState<T extends StateController> extends State<StateBuilderBase> {
   @override
   void initState() {
+    widget._controller ??= Statekit.find<T>(tag: widget._tag);
     super.initState();
     widget._controller!._addCallbackFunction(_updateWidgetTree);
     widget.initState();

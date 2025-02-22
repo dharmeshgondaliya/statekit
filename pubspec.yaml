@@ -1,17 +1,17 @@
 name: statekit
-description: A sample command-line application.
+description: Statekit is a powerful state management library for Flutter, designed for efficiency, widget binding, and ease of use.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/dharmeshgondaliya/statekit
+topics: [statekit, state-management, widget-binding]
 
 environment:
   sdk: ^3.6.1
 
-# Add regular dependencies here.
 dependencies:
   flutter:
     sdk: flutter
-  # path: ^1.8.0
-
+  
 dev_dependencies:
   lints: ^5.0.0
-  test: ^1.24.0
+  flutter_test:
+    sdk: flutter
