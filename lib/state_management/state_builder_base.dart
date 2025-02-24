@@ -49,7 +49,5 @@ class _StateBuilderBaseState<T extends StateController> extends State<StateBuild
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.build(context);
-  }
+  Widget build(BuildContext context) => widget.build(context);
 }
