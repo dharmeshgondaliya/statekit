@@ -2,6 +2,9 @@
 
 Statekit is an extra-light and powerful state management solution for Flutter. It provides high-performance, efficient state management without relying on Streams, ChangeNotifier, or any other third-party state management package. Designed with performance and resource efficiency in mind, Statekit simplifies the process of managing dependencies and state updates while keeping the development experience seamless and intuitive.
 
+For generating project structures and screens efficiently, use **[statekit_cli](https://pub.dev/packages/statekit_cli)**.
+
+
 ## Installation
 
 To get started with Statekit, install it by running the following command in your Flutter project:

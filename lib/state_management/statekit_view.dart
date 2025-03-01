@@ -1,14 +1,12 @@
 part of "../statekit.dart";
 
 abstract class StatekitView<T extends StateController> extends StatefulWidget {
-  StatekitView({super.key, T? controller, this.tag}) {
-    _controller = controller ?? Statekit.findOrNull<T>(tag: tag);
-  }
+  StatekitView({super.key, this.tag});
   final String? tag;
-  T? _controller;
   late final BuildContext Function() _contextGetter;
+  late final T Function() _controllerGetter;
 
-  T get controller => _controller!;
+  T get controller => _controllerGetter.call();
 
   BuildContext get context => _contextGetter.call();
 
@@ -29,12 +27,17 @@ abstract class StatekitView<T extends StateController> extends StatefulWidget {
 
 class _StatekitViewState<T extends StateController> extends State<StatekitView> {
   BuildContext _contextGetter() => context;
+  T _controllerGetter() => _controller!;
+
+  T? _controller;
 
   @override
   void initState() {
-    widget._controller ??= Statekit.find<T>(tag: widget.tag);
+    _controller ??= Statekit.find<T>(tag: widget.tag);
     widget._contextGetter = _contextGetter;
+    widget._controllerGetter = _controllerGetter;
     super.initState();
+    _controller ??= Statekit.find<T>(tag: widget.tag);
     widget.initState();
   }
 

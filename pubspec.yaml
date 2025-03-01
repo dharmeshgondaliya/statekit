@@ -15,3 +15,7 @@ dev_dependencies:
   lints: ^5.0.0
   flutter_test:
     sdk: flutter
+
+screenshots:
+  - description: The statekit package logo.
+    path: screenshots/logo.png
