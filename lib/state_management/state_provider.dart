@@ -8,7 +8,7 @@ class StatekitProvider<T> {
   String? tag;
 }
 
-class StateProvider<T extends StateController> extends StatefulWidget {
+class StateProvider<T extends StateDataHolder> extends StatefulWidget {
   StateProvider({super.key, required this.stateProvider, required this.child}) : stateProviders = null {
     _putControllers();
   }
@@ -29,8 +29,10 @@ class StateProvider<T extends StateController> extends StatefulWidget {
     }
     for (int i = 0; i < _providers.length; i++) {
       T controller = Statekit.putIfAbsent(_providers[i].create(), tag: _providers[i].tag);
-      if (child is StatekitView && child is StateBinding) {
-        controller.binding = child as StateBinding;
+      if (controller is StateController && child is StatekitView && child is StateBinding) {
+        try {
+          controller.binding = child as StateBinding;
+        } catch (_) {}
       }
     }
   }
@@ -39,7 +41,7 @@ class StateProvider<T extends StateController> extends StatefulWidget {
   State<StateProvider> createState() => _StateProviderState<T>();
 }
 
-class _StateProviderState<T extends StateController> extends State<StateProvider> {
+class _StateProviderState<T extends StateDataHolder> extends State<StateProvider> {
   void _initControllers() {
     for (int i = 0; i < widget._providers.length; i++) {
       _initStateProviderController(widget._providers[i].create, widget._providers[i].tag);
@@ -47,8 +49,8 @@ class _StateProviderState<T extends StateController> extends State<StateProvider
   }
 
   void _initStateProviderController<S>(StateProviderCreate<S> creator, String? tag) {
-    (Statekit.findOrNull<T>(tag: tag) as StateController)
-      ..arguments = ModalRoute.settingsOf(context)?.arguments
+    (Statekit.findOrNull<T>(tag: tag) as StateController?)
+      ?..arguments = ModalRoute.settingsOf(context)?.arguments
       ..onInit();
   }
 
@@ -59,7 +61,7 @@ class _StateProviderState<T extends StateController> extends State<StateProvider
   }
 
   void _disposeStateProviderController<S>(StateProviderCreate<S> creator, String? tag) {
-    (Statekit.findOrNull<T>(tag: tag) as StateController).dispose();
+    (Statekit.findOrNull<T>(tag: tag) as StateController?)?.dispose();
     Statekit.delete<T>(tag: tag);
   }
 

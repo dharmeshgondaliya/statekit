@@ -10,7 +10,11 @@ final class DataStorage {
   final Map<String, dynamic> _data = <String, dynamic>{};
 
   T _put<T>(T obj, String? tag) {
-    String key = "${T.toString()}@${tag ?? ''}";
+    Type? type;
+    if (T != obj.runtimeType) {
+      type = obj.runtimeType;
+    }
+    String key = "${type?.toString() ?? T.toString()}@${tag ?? ''}";
     if (_data.containsKey(key)) {
       throw Exception("$T is already registered.");
     }
@@ -19,7 +23,11 @@ final class DataStorage {
   }
 
   T _putIfAbsent<T>(T obj, String? tag) {
-    String key = "${T.toString()}@${tag ?? ''}";
+    Type? type;
+    if (T != obj.runtimeType) {
+      type = obj.runtimeType;
+    }
+    String key = "${type?.toString() ?? T.toString()}@${tag ?? ''}";
     if (_data.containsKey(key)) {
       return _data[key];
     }
@@ -45,7 +53,12 @@ final class DataStorage {
   }
 
   T _replace<T>(T obj, String? tag) {
-    String key = "${T.toString()}@${tag ?? ''}";
+    Type? type;
+    if (T != obj.runtimeType) {
+      type = obj.runtimeType;
+    }
+
+    String key = "${type?.toString() ?? T.toString()}@${tag ?? ''}";
     if (!_data.containsKey(key)) {
       throw Exception("$T is not registered.");
     }
@@ -60,7 +73,11 @@ final class DataStorage {
   }
 
   void deleteObject<T>(T obj, String? tag) {
-    String key = "${T.toString()}@${tag ?? ''}";
+    Type? type;
+    if (T != obj.runtimeType) {
+      type = obj.runtimeType;
+    }
+    String key = "${type?.toString() ?? T.toString()}@${tag ?? ''}";
     _data.remove(key);
   }
 

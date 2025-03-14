@@ -3,8 +3,8 @@ part of "../statekit.dart";
 abstract class StatekitView<T extends StateController> extends StatefulWidget {
   StatekitView({super.key, this.tag});
   final String? tag;
-  late final BuildContext Function() _contextGetter;
-  late final T Function() _controllerGetter;
+  late BuildContext Function() _contextGetter;
+  late T Function() _controllerGetter;
 
   T get controller => _controllerGetter.call();
 
@@ -48,5 +48,14 @@ class _StatekitViewState<T extends StateController> extends State<StatekitView> 
   }
 
   @override
-  Widget build(BuildContext context) => widget.build(context);
+  void didUpdateWidget(covariant StatekitView<StateController<StateBinding>> oldWidget) {
+    widget._contextGetter = _contextGetter;
+    widget._controllerGetter = _controllerGetter;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.build(context);
+  }
 }
